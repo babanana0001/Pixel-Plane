@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Plane</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico">
+</head>
+
+<body>
+    <!-- 封面頁 -->
+    <div id="coverPage">
+        <div class="cover-content">
+            <h1 class="arcade-title">PIXEL PLANE</h1>
+            <p class="arcade-slogan">復古街機魂，像素戰機啟航！</p>
+            <button id="enterGameBtn" class="arcade-btn">進入遊戲</button>
+        </div>
+    </div>
+
+    <!-- 原本的內容包一個主內容區塊，預設隱藏 -->
+    <div id="mainContent" style="display:none;">
+        <button id="startButton" style="display:none;">Start Game</button>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="sidePanel">
+            <div id="scoreBoard">
+                <h3>記分板</h3>
+                <div id="scoreValue">0</div>
+            </div>
+            <div id="ruleBoard">
+                <h3>遊戲規則</h3>
+                <ul>
+                    <li>方向鍵移動，空白鍵射擊</li>
+                    <li>碰到敵人或障礙物會扣血</li>
+                    <li>小怪血量：1~3（分三種顏色）</li>
+                    <li>分數=擊落敵人*10*血量</li>
+                </ul>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="text-align:center;">
+                        <img src="img/alien4-removebg-preview.png" alt="紅色怪" width="32" height="32"><br>
+                        <span style="color:red;">血量1</span>
+                    </div>
+                    <div style="text-align:center;">
+                        <img src="img/alien-removebg-preview.png" alt="橙色怪" width="32" height="32"><br>
+                        <span style="color:orange;">血量2</span>
+                    </div>
+                    <div style="text-align:center;">
+                        <img src="img/alien2-removebg-preview.png" alt="黃色怪" width="32" height="32"><br>
+                        <span style="color:yellow;">血量3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="score">Score: 0</div>
+        <div id="authPanel"
+            style="background:#222; color:#fff; padding:20px; border-radius:10px; width:300px; margin:40px auto;">
+            <h3>會員登入/註冊</h3>
+            <input type="email" id="email" placeholder="Email" style="width:90%;margin-bottom:8px;"><br>
+            <input type="password" id="password" placeholder="Password" style="width:90%;margin-bottom:8px;"><br>
+            <button id="loginBtn">登入</button>
+            <button id="registerBtn">註冊</button>
+            <div id="authMsg" style="margin-top:10px;color:#4CAF50;"></div>
+        </div>
+    </div>
+
+    <!-- 戰機選擇頁，預設隱藏 -->
+    <div id="planeSelectPage" style="display:none;">
+        <div class="cover-content">
+            <h2 class="arcade-title">選擇你的戰機</h2>
+            <div class="plane-select-row" style="display:flex; gap:40px; justify-content:center; margin:30px 0;">
+                <div class="plane-option" data-plane="1">
+                    <img src="img/player1.png" alt="戰機1" width="80"><br>
+                    <span style="color:#4CAF50;">經典型</span>
+                </div>
+                <div class="plane-option" data-plane="2">
+                    <img src="img/player2.png" alt="戰機2" width="80"><br>
+                    <span style="color:#ff9800;">速度型</span>
+                </div>
+                <div class="plane-option" data-plane="3">
+                    <img src="img/player3.png" alt="戰機3" width="80"><br>
+                    <span style="color:#2196f3;">防禦型</span>
+                </div>
+            </div>
+            <button id="confirmPlaneBtn" class="arcade-btn" disabled>確認選擇</button>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+    <script>
+        // 封面頁切換到戰機選擇頁
+        document.getElementById('enterGameBtn').onclick = function () {
+            document.getElementById('coverPage').style.display = 'none';
+            document.getElementById('planeSelectPage').style.display = 'flex';
+        };
+
+        let selectedPlane = null;
+        const planeOptions = document.querySelectorAll('.plane-option');
+        const confirmPlaneBtn = document.getElementById('confirmPlaneBtn');
+
+        planeOptions.forEach(option => {
+            option.onclick = function() {
+                planeOptions.forEach(opt => opt.style.boxShadow = 'none');
+                this.style.boxShadow = '0 0 16px 4px #fff600';
+                selectedPlane = this.getAttribute('data-plane');
+                confirmPlaneBtn.disabled = false;
+            };
+        });
+
+        confirmPlaneBtn.onclick = function() {
+            // 儲存選擇到 localStorage 或全域變數
+            localStorage.setItem('selectedPlane', selectedPlane);
+            document.getElementById('planeSelectPage').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            // 顯示開始遊戲按鈕
+            document.getElementById('startButton').style.display = 'block';
+        };
+    </script>
+</body>
+
+</html>
