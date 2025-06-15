@@ -1,4 +1,4 @@
-// --- DOM 取得 ---Add commentMore actions
+// --- DOM 取得 ---
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
