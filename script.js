@@ -8,7 +8,8 @@ const planeOptions = document.querySelectorAll('.plane-option');
 const confirmPlaneBtn = document.getElementById('confirmPlaneBtn');
 
 // --- 遊戲設定 ---
-const playerSpeed = 5;
+let playerSpeed = 5; // 改成 let
+let initialHealth = 5; // 新增
 const bulletSpeed = 10;
 const enemySpeed = 2;
 
@@ -37,19 +38,20 @@ const obstacleImg = new Image();
 obstacleImg.src = './img/island-removebg-preview.png';
 
 // 玩家戰機圖片載入（根據 localStorage）
-const playerImg = new Image();
 function loadPlayerImg() {
     let planeType = localStorage.getItem('selectedPlane') || "1";
+    playerSpeed = 5;
+    initialHealth = 5;
     if (planeType === "2") {
         playerImg.src = './img/player2.png';
+        playerSpeed = 8;
     } else if (planeType === "3") {
         playerImg.src = './img/player3.png';
+        initialHealth = 10;
     } else {
         playerImg.src = './img/player1.png';
     }
 }
-loadPlayerImg();
-
 // --- 玩家物件 ---
 const player = {
     x: canvas.width / 2 - 32,
@@ -351,7 +353,8 @@ planeOptions.forEach(option => {
 });
 confirmPlaneBtn.onclick = function() {
     localStorage.setItem('selectedPlane', selectedPlane);
-    loadPlayerImg(); // 重新載入戰機圖片
+    loadPlayerImg();
+    player.health = initialHealth;
     document.getElementById('planeSelectPage').style.display = 'none';
     document.getElementById('mainContent').style.display = 'block';
     document.getElementById('startButton').style.display = 'block';
